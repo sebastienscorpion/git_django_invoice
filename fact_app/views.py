@@ -4,7 +4,8 @@ from .models import *
 from django.contrib import messages
 
 from django.db import transaction
-from django.core.paginator import (Paginator, EmptyPage, PageNotAnInteger)
+
+from .utils import pagination
 
 class HomeView(View):
    
@@ -18,33 +19,19 @@ class HomeView(View):
    
    def get(self, request, *args, **kwargs):
       
-      # default_page
-      default_page = 1
-      
-      page = request.GET.get('page',default_page)
-      
-      #paginate items
-      
-      items_per_page = 5
-      
-      paginator = Paginator(self.invoices, items_per_page)
-      
-      try:
-          items_page = paginator.page(page)
-      except PageNotAnInteger :
-         
-         items_page = paginator.page(default_page)
-      except EmptyPage:
-         items_page = paginator.page(paginator.num_pages)
-         
-      self.context['invoices']= items_page
-         
+      items = pagination(request, self.invoices)
       
       
+      self.context['invoices']= items 
       
       return render(request, self.templates_name, self.context)
    
    def post(self, request, *args, **kwargs ):
+      
+       items = pagination(request, self.invoices)
+      
+      
+       self.context['invoices']= items 
       
        return render(request, self.templates_name, self.context)
       
