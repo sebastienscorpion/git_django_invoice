@@ -19,9 +19,11 @@
 </div>
 
 <br><br>
+
 <div class="form-group">
    <input id="search" class="form-control" type="text" placeholder="search....">
 </div>
+
 <div>
   <table class="table table-striped-columns">
      <thead>
@@ -62,7 +64,7 @@
             <td>
               <a href="#" title="Detail" class="badge text-white bg-success">View</a>
 
-              <button id="btn-invoice-sup" type="button" data-toggle="modal" data-target="#supprimer" class="badge text-white bg-danger" title="Supprimer" data-id="{{ facture.pk }}" data-customer="{{ facture.client.name}}">
+              <button id="btn-invoice-sup" type="button" data-toggle="modal" data-target="#supprimer" class="badge text-white bg-danger" title="Supprimer" data-id="{{ facture.pk }}" data-customer="{{ facture.customer.name}}">
                 Delete
               </button>
 
@@ -123,7 +125,7 @@
         {% csrf_token %}
         <div class="modal-body">
 
-          <input type="hiddeN" id="id_modified" name="id_modified">
+          <input type="hidden" id="id_modified" name="id_modified">
           <label id="label_id" class="text-dark checkbox-inline"><strong id="strong_id">This bill has been paid</strong></label>
 
           <input type="radio" id="html" name="modified" value="True">
@@ -177,4 +179,32 @@
 <!-- end Modal -->
 
 <br><br>
-{% endblock content %}
+<script type="text/javascript">
+
+  $(document).on('click', '#btn-invoice-mod',function(){
+    let invoice_id = $(this).data('id');
+    let customer = $(this).data('customer');
+    $('#id_modified').val(invoice_id);
+  })
+
+
+  $(document).on('click', '#btn-invoice-sup',function(){
+    let invoice_id = $(this).data('id');
+    let customer = $(this).data('customer');
+    $('#id_supprimer').val(invoice_id);
+  })
+
+</script>
+<script>
+
+$(document).ready(function(){
+  $("#search").on("keyup",function(){
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function(){
+      $(this).toggle($(this).text().toLowerCase().indexOf(value)> -1)
+    });
+  });
+});
+
+</script>
+{% endblock %};

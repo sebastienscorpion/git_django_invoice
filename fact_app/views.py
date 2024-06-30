@@ -28,12 +28,52 @@ class HomeView(View):
    
    def post(self, request, *args, **kwargs ):
       
-       items = pagination(request, self.invoices)
+      
+      if request.POST.get('id_modified'):
+         
+         paid = request.POST.get('modified')
+         
+         try:
+            
+            obj = Invoice.objects.get(id=request.POST.get('id_modified'))
+            
+            if paid == 'True':
+               
+               obj.paid=True
+               
+            else:
+               
+               obj.paid = False
+               
+            obj.save()
+            
+            messages.success(request, "change mage succefully.")
+            
+         except Exception as e:
+            
+            messages.error(request, f"sorry, the followings error has occure {e}.")
+            
+      if request.POST.get('id_supprimer'):
+         
+         try:
+            obj= Invoice.objects.get(pk=request.POST.get('id_supprimer'))
+            
+            obj.delete()
+            
+            messages.success(request, "The delection was successful")
+            
+         except Exception as e:
+            
+            messages.error(request, f"sorry, the followings error has occure {e}.")
       
       
-       self.context['invoices']= items 
       
-       return render(request, self.templates_name, self.context)
+      items = pagination(request, self.invoices)
+      
+      
+      self.context['invoices']= items 
+      
+      return render(request, self.templates_name, self.context)
       
 class AddCustomerView(View):
      
