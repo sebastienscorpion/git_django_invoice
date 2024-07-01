@@ -226,7 +226,7 @@ def get_invoice_pdf(request, *args, **kwargs):
    
    # generate pdf
    
-   pdf = pdfkit.from_string(html, False, options)
+   pdf = pdfkit.from_string(html, False, option)
    
    response = HttpResponse(pdf, content_type='application/pdf')
    
