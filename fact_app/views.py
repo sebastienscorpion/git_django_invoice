@@ -9,14 +9,19 @@ import pdfkit
 
 import datetime
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.template.loader import get_template
 
 from django.db import transaction
 
 from .utils import pagination, get_invoice
 
+from .decorators import *
 
-class HomeView(View):
+
+class HomeView(LoginRequiredSuperuserMixim ,View):
    
    templates_name = 'index.html'
    
@@ -84,7 +89,7 @@ class HomeView(View):
       
       return render(request, self.templates_name, self.context)
       
-class AddCustomerView(View):
+class AddCustomerView(LoginRequiredSuperuserMixim, View):
      
    template_name ='add_customer.html'
    
@@ -122,7 +127,7 @@ class AddCustomerView(View):
          
       return render(request, self.template_name)
    
-class AddInvoiceView(View):
+class AddInvoiceView(LoginRequiredSuperuserMixim, View):
    
    template_name='add_invoice.html'
    
@@ -187,7 +192,7 @@ class AddInvoiceView(View):
       
       return render(request, self.template_name, self.context)
    
-class InvoiceVisualizationView(View):
+class InvoiceVisualizationView(LoginRequiredSuperuserMixim, View):
     
     template_name = 'invoice.html'
     
@@ -201,7 +206,7 @@ class InvoiceVisualizationView(View):
        
       return render(request, self.template_name, context)
 
-  
+@superuser_required 
 def get_invoice_pdf(request, *args, **kwargs):
    
    pk = kwargs.get('pk')
