@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from django.utils.translation import gettext_lazy as _
 
 class AdminCustomer(admin.ModelAdmin):
   list_display = ('name', 'email','phone','address','sex','age','city','zip_code')

@@ -21,6 +21,7 @@ from .utils import pagination, get_invoice
 from .decorators import *
 
 
+
 class HomeView(LoginRequiredSuperuserMixim ,View):
    
    templates_name = 'index.html'
